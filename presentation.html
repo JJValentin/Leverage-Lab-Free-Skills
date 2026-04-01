@@ -3,847 +3,651 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leverage Lab Free Skills</title>
+<title>My Claude Code Setup - Leverage Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ── Reset ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
 
-  /* ── Design Tokens ── */
-  :root {
-    --bg-primary: #0B0F1A;
-    --bg-surface: #111827;
-    --bg-surface-2: #1E293B;
-    --bg-surface-hover: #253349;
-    --border: #334155;
-    --border-subtle: rgba(71,85,105,0.4);
-    --text-primary: #F8FAFC;
-    --text-secondary: #94A3B8;
-    --text-muted: #64748B;
-    --accent-green: #22C55E;
-    --accent-green-dim: rgba(34,197,94,0.15);
-    --accent-blue: #3B82F6;
-    --accent-blue-dim: rgba(59,130,246,0.12);
-    --accent-purple: #A855F7;
-    --accent-purple-dim: rgba(168,85,247,0.12);
-    --accent-amber: #F59E0B;
-    --accent-amber-dim: rgba(245,158,11,0.12);
-    --font-heading: 'Space Grotesk', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --radius: 12px;
-    --radius-lg: 20px;
-    --transition: 200ms ease;
+  :root{
+    --bg:#0B0F1A;--bg-s:#111827;--bg-s2:#1E293B;--bg-s3:#253349;
+    --border:#334155;--border-s:rgba(71,85,105,.4);
+    --t1:#F8FAFC;--t2:#CBD5E1;--t3:#94A3B8;--t4:#64748B;
+    --green:#22C55E;--green-d:rgba(34,197,94,.12);--green-b:rgba(34,197,94,.25);
+    --blue:#3B82F6;--blue-d:rgba(59,130,246,.12);
+    --purple:#A855F7;--purple-d:rgba(168,85,247,.12);
+    --amber:#F59E0B;--amber-d:rgba(245,158,11,.12);
+    --red:#EF4444;--red-d:rgba(239,68,68,.12);
+    --cyan:#06B6D4;--cyan-d:rgba(6,182,212,.12);
+    --h:'Space Grotesk',sans-serif;--b:'DM Sans',sans-serif;--m:'JetBrains Mono',monospace;
+    --r:12px;--rl:20px;--tr:200ms ease;
   }
 
-  body {
-    font-family: var(--font-body);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+  body{font-family:var(--b);background:var(--bg);color:var(--t1);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+
+  /* ── Progress bar ── */
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--green);z-index:200;transition:width 150ms linear;width:0}
 
   /* ── Nav ── */
-  nav {
-    position: fixed;
-    top: 16px; left: 16px; right: 16px;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    background: rgba(11,15,26,0.85);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-  }
-  .nav-brand {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .nav-brand svg { flex-shrink: 0; }
-  .nav-links { display: flex; gap: 8px; }
-  .nav-links a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: all var(--transition);
-    cursor: pointer;
-  }
-  .nav-links a:hover { color: var(--text-primary); background: var(--bg-surface-2); }
-  .nav-cta {
-    background: var(--accent-green) !important;
-    color: var(--bg-primary) !important;
-    font-weight: 600 !important;
-  }
-  .nav-cta:hover { background: #16A34A !important; }
-
-  @media (max-width: 768px) {
-    .nav-links { display: none; }
-    nav { padding: 12px 16px; }
-  }
+  nav{position:fixed;top:12px;left:12px;right:12px;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(11,15,26,.88);backdrop-filter:blur(20px);border:1px solid var(--border-s);border-radius:var(--r);transition:all .3s}
+  .nav-brand{font-family:var(--h);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px}
+  .nav-chapters{display:flex;gap:4px;list-style:none}
+  .nav-chapters a{color:var(--t3);font-size:.8rem;font-weight:500;padding:6px 12px;border-radius:8px;transition:all var(--tr);cursor:pointer;white-space:nowrap}
+  .nav-chapters a:hover,.nav-chapters a.active{color:var(--t1);background:var(--bg-s2)}
+  @media(max-width:900px){.nav-chapters{display:none}}
 
   /* ── Sections ── */
-  section { padding: 120px 24px 80px; max-width: 1200px; margin: 0 auto; }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent-green);
-    margin-bottom: 12px;
-  }
-  .section-title {
-    font-family: var(--font-heading);
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 16px;
-  }
-  .section-subtitle {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    max-width: 640px;
-    line-height: 1.7;
-  }
+  .chapter{min-height:100vh;padding:120px 24px 100px;max-width:1100px;margin:0 auto;position:relative}
+  .chapter-num{font-family:var(--m);font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .chapter-num::after{content:'';flex:1;height:1px;background:var(--border-s);max-width:120px}
+  .chapter-title{font-family:var(--h);font-size:clamp(1.8rem,4.5vw,3rem);font-weight:700;line-height:1.15;margin-bottom:16px;max-width:720px}
+  .chapter-lead{font-size:1.1rem;color:var(--t2);max-width:620px;line-height:1.7;margin-bottom:48px}
+  .highlight{color:var(--green)}
 
   /* ── Hero ── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-top: 80px;
-    position: relative;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%; transform: translateX(-50%);
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero .section-title { max-width: 800px; }
-  .hero .section-subtitle { margin: 0 auto 40px; max-width: 580px; }
-  .hero-cta-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 24px 80px;position:relative}
+  .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(34,197,94,.05) 0%,transparent 65%);pointer-events:none}
+  .hero .chapter-title{max-width:760px;margin-left:auto;margin-right:auto}
+  .hero .chapter-lead{margin-left:auto;margin-right:auto;text-align:center}
+  .hero-sub{font-size:.95rem;color:var(--t3);max-width:540px;margin:0 auto 40px;line-height:1.7}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 7px;background:var(--green-d);border:1px solid var(--green-b);border-radius:999px;font-size:.78rem;font-weight:500;color:var(--green);margin-bottom:24px}
+  .hero-tag-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 28px;
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 10px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all var(--transition);
-    border: none;
-  }
-  .btn-primary {
-    background: var(--accent-green);
-    color: var(--bg-primary);
-  }
-  .btn-primary:hover { background: #16A34A; transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border);
-  }
-  .btn-secondary:hover { border-color: var(--text-secondary); background: var(--bg-surface); }
+  .scroll-hint{margin-top:64px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--t4);font-size:.8rem;animation:bob 2.5s ease-in-out infinite}
+  .scroll-hint svg{opacity:.5}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 16px 6px 8px;
-    background: var(--accent-green-dim);
-    border: 1px solid rgba(34,197,94,0.25);
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--accent-green);
-    margin-bottom: 24px;
-  }
-  .hero-badge-dot {
-    width: 8px; height: 8px;
-    background: var(--accent-green);
-    border-radius: 50%;
-    animation: pulse-dot 2s infinite;
-  }
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  /* ── Blockquote callout ── */
+  .callout{background:var(--bg-s);border-left:3px solid var(--green);border-radius:0 var(--r) var(--r) 0;padding:20px 24px;margin:32px 0;font-size:.95rem;color:var(--t2);line-height:1.7}
+  .callout strong{color:var(--t1)}
+  .callout.blue{border-left-color:var(--blue)}
+  .callout.amber{border-left-color:var(--amber)}
 
-  /* ── Terminal ── */
-  .terminal {
-    margin-top: 56px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    max-width: 680px;
-    width: 100%;
-    text-align: left;
-    overflow: hidden;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.5);
-  }
-  .terminal-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px 16px;
-    background: var(--bg-surface-2);
-    border-bottom: 1px solid var(--border);
-  }
-  .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
-  .terminal-dot:nth-child(1) { background: #EF4444; }
-  .terminal-dot:nth-child(2) { background: #F59E0B; }
-  .terminal-dot:nth-child(3) { background: #22C55E; }
-  .terminal-body {
-    padding: 20px 24px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
-  }
-  .terminal-body .prompt { color: var(--accent-green); }
-  .terminal-body .cmd { color: var(--text-primary); }
-  .terminal-body .comment { color: var(--text-muted); }
-  .terminal-body .output { color: var(--text-secondary); }
+  /* ── Skill rows ── */
+  .skill-row{display:flex;gap:24px;margin-bottom:20px;align-items:stretch}
+  .skill-card{flex:1;background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--rl);padding:28px;transition:all var(--tr);position:relative;overflow:hidden}
+  .skill-card:hover{border-color:var(--border);transform:translateY(-2px)}
+  .skill-card.wide{flex:2}
+  .skill-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .skill-icon svg{width:20px;height:20px}
+  .skill-icon.g{background:var(--green-d);color:var(--green)}
+  .skill-icon.b{background:var(--blue-d);color:var(--blue)}
+  .skill-icon.p{background:var(--purple-d);color:var(--purple)}
+  .skill-icon.a{background:var(--amber-d);color:var(--amber)}
+  .skill-icon.c{background:var(--cyan-d);color:var(--cyan)}
+  .skill-icon.r{background:var(--red-d);color:var(--red)}
+  .skill-card h3{font-family:var(--h);font-size:1.05rem;font-weight:600;margin-bottom:6px}
+  .skill-card p{font-size:.875rem;color:var(--t3);line-height:1.6}
+  .skill-tag{position:absolute;top:16px;right:16px;font-family:var(--m);font-size:.65rem;padding:3px 8px;border-radius:5px;font-weight:500}
+  .tag-free{background:var(--green-d);color:var(--green)}
+  .tag-private{background:var(--bg-s2);color:var(--t4)}
+  @media(max-width:768px){.skill-row{flex-direction:column}.skill-card.wide{flex:1}}
 
-  /* ── Skill Cards (Bento) ── */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 20px;
-    margin-top: 48px;
-  }
-  .skill-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 32px;
-    transition: all var(--transition);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .skill-card:hover {
-    border-color: var(--border);
-    background: var(--bg-surface-2);
-    transform: translateY(-2px);
-  }
-  .skill-card-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-  }
-  .skill-card-icon svg { width: 24px; height: 24px; }
-  .skill-card-icon.green { background: var(--accent-green-dim); color: var(--accent-green); }
-  .skill-card-icon.blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
-  .skill-card-icon.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
-  .skill-card-icon.amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
-  .skill-card h3 {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .skill-card p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.65;
-    margin-bottom: 20px;
-  }
-  .skill-card-tag {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    padding: 4px 10px;
-    border-radius: 6px;
-    letter-spacing: 0.02em;
-  }
-  .tag-free { background: var(--accent-green-dim); color: var(--accent-green); }
-  .tag-schema { background: var(--accent-blue-dim); color: var(--accent-blue); }
+  /* ── Integration grid ── */
+  .int-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
+  .int-card{background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--r);padding:24px;transition:all var(--tr)}
+  .int-card:hover{border-color:var(--border)}
+  .int-card h4{font-family:var(--h);font-size:.95rem;font-weight:600;margin-bottom:4px}
+  .int-card p{font-size:.85rem;color:var(--t3);line-height:1.6}
 
-  .skill-features {
-    list-style: none;
-    margin-top: 16px;
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .skill-features li {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    display: flex; align-items: flex-start; gap: 8px;
-  }
-  .skill-features li::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent-green);
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 8px;
-  }
+  /* ── Workflow / Sequence ── */
+  .seq{margin-top:48px}
+  .seq-step{display:flex;gap:24px;margin-bottom:40px;position:relative}
+  .seq-marker{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:48px}
+  .seq-num{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--h);font-weight:700;font-size:.95rem;background:var(--green-d);color:var(--green);position:relative;z-index:1}
+  .seq-line{flex:1;width:2px;background:var(--border-s);margin-top:4px}
+  .seq-step:last-child .seq-line{display:none}
+  .seq-content{padding-top:6px;flex:1}
+  .seq-content h3{font-family:var(--h);font-size:1.15rem;font-weight:600;margin-bottom:6px}
+  .seq-content p{font-size:.925rem;color:var(--t2);line-height:1.7;max-width:580px}
+  .seq-tool{margin-top:8px;display:inline-block;font-family:var(--m);font-size:.72rem;padding:3px 10px;background:var(--bg-s2);border:1px solid var(--border-s);border-radius:6px;color:var(--t3)}
 
-  /* ── Workflow ── */
-  .workflow-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2px;
-    margin-top: 48px;
-    background: var(--border-subtle);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .workflow-step {
-    background: var(--bg-surface);
-    padding: 32px 24px;
-    position: relative;
-  }
-  .workflow-step-num {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: rgba(34,197,94,0.12);
-    line-height: 1;
-    margin-bottom: 12px;
-  }
-  .workflow-step h3 {
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .workflow-step p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-  .workflow-step-tool {
-    margin-top: 12px;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--accent-green);
-    padding: 4px 10px;
-    background: var(--accent-green-dim);
-    border-radius: 6px;
-    display: inline-block;
-  }
+  /* ── Two-up block (enforcement tools) ── */
+  .two-up{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0}
+  .two-up-card{background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--rl);padding:28px;transition:all var(--tr)}
+  .two-up-card:hover{border-color:var(--border)}
+  .two-up-card h3{font-family:var(--h);font-size:1.05rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .two-up-card p{font-size:.9rem;color:var(--t2);line-height:1.65}
+  @media(max-width:768px){.two-up{grid-template-columns:1fr}}
 
-  /* ── Agent-Ops ── */
-  .flow-diagram {
-    margin-top: 48px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 40px;
-    overflow-x: auto;
-  }
-  .flow-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    flex-wrap: nowrap;
-    min-width: fit-content;
-  }
-  .flow-node {
-    display: flex; flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-width: 120px;
-  }
-  .flow-node-box {
-    width: 100px; height: 100px;
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-    transition: all var(--transition);
-  }
-  .flow-node-box:hover { transform: scale(1.05); }
-  .flow-node-sub {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-style: italic;
-  }
-  .flow-arrow {
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    padding: 0 8px;
-    flex-shrink: 0;
-  }
-  .flow-green .flow-node-box { background: var(--accent-green-dim); border: 1px solid rgba(34,197,94,0.3); color: var(--accent-green); }
-  .flow-blue .flow-node-box { background: var(--accent-blue-dim); border: 1px solid rgba(59,130,246,0.3); color: var(--accent-blue); }
-  .flow-purple .flow-node-box { background: var(--accent-purple-dim); border: 1px solid rgba(168,85,247,0.3); color: var(--accent-purple); }
-  .flow-amber .flow-node-box { background: var(--accent-amber-dim); border: 1px solid rgba(245,158,11,0.3); color: var(--accent-amber); }
+  /* ── Agents landscape ── */
+  .agent-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+  .agent-card{background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--r);padding:24px;transition:all var(--tr)}
+  .agent-card:hover{border-color:var(--border)}
+  .agent-card h4{font-family:var(--h);font-size:.95rem;font-weight:600;margin-bottom:6px}
+  .agent-card p{font-size:.85rem;color:var(--t3);line-height:1.6}
+  .agent-card.featured{border-color:var(--green-b);background:linear-gradient(135deg,var(--bg-s) 0%,rgba(34,197,94,.04) 100%)}
+  @media(max-width:768px){.agent-row{grid-template-columns:1fr}}
 
-  .artifacts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
-    margin-top: 32px;
-  }
-  .artifact-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-    padding: 24px;
-    transition: all var(--transition);
-  }
-  .artifact-card:hover { border-color: var(--border); }
-  .artifact-card h4 {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .artifact-card .filename {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-  }
-  .artifact-card p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
+  .agent-roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px}
+  .agent-role{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--r);font-size:.875rem;transition:all var(--tr)}
+  .agent-role:hover{border-color:var(--border)}
+  .agent-role-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .agent-role span{color:var(--t3)}
 
-  /* ── Getting Started ── */
-  .getting-started-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin-top: 48px;
-  }
-  .gs-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    transition: all var(--transition);
-  }
-  .gs-card:hover { border-color: var(--border); background: var(--bg-surface-2); }
-  .gs-card-week {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--accent-green);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .gs-card h3 {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .gs-card p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
+  /* ── Build Your Own ── */
+  .build-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:32px}
+  .build-step{background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--r);padding:24px;transition:all var(--tr)}
+  .build-step:hover{border-color:var(--border)}
+  .build-step-num{font-family:var(--h);font-size:2rem;font-weight:700;color:rgba(34,197,94,.1);line-height:1;margin-bottom:10px}
+  .build-step h4{font-family:var(--h);font-size:.95rem;font-weight:600;margin-bottom:6px}
+  .build-step p{font-size:.85rem;color:var(--t3);line-height:1.6}
 
-  /* ── CTA ── */
-  .cta-section {
-    text-align: center;
-    padding: 100px 24px 120px;
-    position: relative;
-  }
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 400px;
-    background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .cta-section .section-title { margin-bottom: 16px; }
-  .cta-section .section-subtitle { margin: 0 auto 32px; }
+  /* ── Timeline (Getting Started) ── */
+  .timeline{margin-top:40px;position:relative}
+  .timeline::before{content:'';position:absolute;left:23px;top:0;bottom:0;width:2px;background:var(--border-s)}
+  .tl-item{display:flex;gap:20px;margin-bottom:32px;position:relative}
+  .tl-dot{width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:8px;position:relative;z-index:1;box-shadow:0 0 0 4px var(--bg);margin-left:19px}
+  .tl-content h4{font-family:var(--h);font-size:1rem;font-weight:600;margin-bottom:4px}
+  .tl-content .tl-when{font-family:var(--m);font-size:.7rem;color:var(--green);margin-bottom:6px}
+  .tl-content p{font-size:.9rem;color:var(--t2);line-height:1.6;max-width:540px}
 
-  /* ── Code blocks ── */
-  .code-block {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    overflow-x: auto;
-    margin-top: 24px;
-  }
-  .code-block .prompt { color: var(--accent-green); }
-  .code-block .cmd { color: var(--text-primary); }
+  /* ── Download CTA ── */
+  .dl-section{text-align:center;padding:100px 24px 120px;position:relative}
+  .dl-section::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(circle,rgba(34,197,94,.05) 0%,transparent 65%);pointer-events:none}
+  .dl-box{display:inline-block;background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--rl);padding:40px 48px;margin-top:32px;text-align:center;max-width:520px}
+  .dl-box h3{font-family:var(--h);font-size:1.2rem;font-weight:600;margin-bottom:8px}
+  .dl-box p{font-size:.9rem;color:var(--t3);line-height:1.6;margin-bottom:20px}
+  .dl-items{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;text-align:left}
+  .dl-item{font-size:.85rem;color:var(--t2);display:flex;align-items:center;gap:8px}
+  .dl-item svg{width:16px;height:16px;color:var(--green);flex-shrink:0}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;font-family:var(--b);font-size:.95rem;font-weight:600;border-radius:10px;cursor:pointer;transition:all var(--tr);border:none}
+  .btn-g{background:var(--green);color:var(--bg)}
+  .btn-g:hover{background:#16A34A;transform:translateY(-1px)}
+  .btn-o{background:transparent;color:var(--t1);border:1px solid var(--border)}
+  .btn-o:hover{border-color:var(--t3);background:var(--bg-s)}
 
   /* ── Divider ── */
-  .divider {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  .divider hr {
-    border: none;
-    border-top: 1px solid var(--border-subtle);
-  }
+  .div-line{max-width:1100px;margin:0 auto;padding:0 24px}
+  .div-line hr{border:none;border-top:1px solid var(--border-s)}
 
   /* ── Footer ── */
-  footer {
-    text-align: center;
-    padding: 40px 24px;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-  footer a {
-    color: var(--accent-green);
-    text-decoration: none;
-    transition: color var(--transition);
-  }
-  footer a:hover { color: #16A34A; }
+  footer{text-align:center;padding:40px 24px 60px;color:var(--t4);font-size:.85rem}
+  footer a{color:var(--green);transition:color var(--tr)}
+  footer a:hover{color:#16A34A}
 
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    section { padding: 80px 16px 60px; }
-    .skills-grid { grid-template-columns: 1fr; }
-    .workflow-steps { grid-template-columns: 1fr; }
-    .flow-row { flex-wrap: wrap; justify-content: center; }
-    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
-    .artifacts-grid { grid-template-columns: 1fr; }
-    .getting-started-grid { grid-template-columns: 1fr; }
-    .flow-diagram { padding: 24px 16px; }
-  }
+  /* ── Terminal ── */
+  .term{background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--r);overflow:hidden;margin:24px 0;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:var(--bg-s2);border-bottom:1px solid var(--border-s)}
+  .term-d{width:11px;height:11px;border-radius:50%}
+  .term-d:nth-child(1){background:#EF4444}.term-d:nth-child(2){background:#F59E0B}.term-d:nth-child(3){background:#22C55E}
+  .term-body{padding:16px 20px;font-family:var(--m);font-size:.8rem;line-height:1.8;color:var(--t3)}
+  .term-body .pr{color:var(--green)}.term-body .cm{color:var(--t1)}.term-body .co{color:var(--t4)}.term-body .ou{color:var(--t3)}
 
   /* ── Animations ── */
-  @media (prefers-reduced-motion: no-preference) {
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  @media(prefers-reduced-motion:no-preference){
+    .fi{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+    .fi.vis{opacity:1;transform:translateY(0)}
+    .fi-d1{transition-delay:.1s}.fi-d2{transition-delay:.2s}.fi-d3{transition-delay:.3s}.fi-d4{transition-delay:.4s}
+    .fi-l{opacity:0;transform:translateX(-24px);transition:opacity .6s ease,transform .6s ease}
+    .fi-r{opacity:0;transform:translateX(24px);transition:opacity .6s ease,transform .6s ease}
+    .fi-l.vis,.fi-r.vis{opacity:1;transform:translateX(0)}
+    .fi-scale{opacity:0;transform:scale(.95);transition:opacity .5s ease,transform .5s ease}
+    .fi-scale.vis{opacity:1;transform:scale(1)}
   }
-  @media (prefers-reduced-motion: reduce) {
-    .fade-in { opacity: 1; transform: none; }
-  }
+  @media(prefers-reduced-motion:reduce){.fi,.fi-l,.fi-r,.fi-scale{opacity:1;transform:none}}
+
+  /* ── What Matters ── */
+  .meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+  .meta-card{background:var(--bg-s);border:1px solid var(--border-s);border-radius:var(--r);padding:24px;transition:all var(--tr)}
+  .meta-card:hover{border-color:var(--border)}
+  .meta-card h4{font-family:var(--h);font-size:.95rem;font-weight:600;margin-bottom:6px}
+  .meta-card p{font-size:.85rem;color:var(--t3);line-height:1.6}
+  @media(max-width:768px){.meta-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- ── Nav ── -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- Nav -->
 <nav>
   <a href="#" class="nav-brand">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/></svg>
     Leverage Lab
   </a>
-  <div class="nav-links">
-    <a href="#skills">Skills</a>
-    <a href="#workflow">Workflow</a>
-    <a href="#agent-ops">Agent-Ops</a>
-    <a href="#start">Get Started</a>
-    <a href="https://github.com/JJValentin/Leverage-Lab-Free-Skills" class="nav-cta" target="_blank" rel="noopener">Get the repo</a>
-  </div>
+  <ul class="nav-chapters" id="navLinks">
+    <li><a href="#skills" data-section="skills">Skills</a></li>
+    <li><a href="#tools" data-section="tools">Tools</a></li>
+    <li><a href="#workflow" data-section="workflow">Workflow</a></li>
+    <li><a href="#agents" data-section="agents">Agents</a></li>
+    <li><a href="#build" data-section="build">Build Your Own</a></li>
+    <li><a href="#start" data-section="start">Start Here</a></li>
+  </ul>
 </nav>
 
-<!-- ── Hero ── -->
-<section class="hero">
-  <div class="hero-badge">
-    <span class="hero-badge-dot"></span>
-    Open Source &middot; MIT License
-  </div>
-  <h1 class="section-title">Production-tested AI skills.<br>Install and run.</h1>
-  <p class="section-subtitle">Three skills and one project management schema that make your AI assistant actually useful. Decision frameworks, multi-platform research, skill building, and structured project execution.</p>
-  <div class="hero-cta-group">
-    <a href="https://github.com/JJValentin/Leverage-Lab-Free-Skills" class="btn btn-primary" target="_blank" rel="noopener">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      Clone the repo
-    </a>
-    <a href="#skills" class="btn btn-secondary">See what's inside</a>
-  </div>
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-tag"><span class="hero-tag-dot"></span>How I actually use it</div>
+  <h1 class="chapter-title" style="text-align:center">My Claude Code Setup</h1>
+  <p class="chapter-lead" style="text-align:center;margin-bottom:8px">How I run my entire business through one terminal.</p>
+  <p class="hero-sub">Client campaigns, offers, funnels, content, Google Workspace, automations. All from Claude Code. This is exactly how I set it up.</p>
 
-  <div class="terminal" style="margin-top: 56px;">
-    <div class="terminal-bar">
-      <span class="terminal-dot"></span>
-      <span class="terminal-dot"></span>
-      <span class="terminal-dot"></span>
-    </div>
-    <div class="terminal-body">
-      <span class="comment"># Point your AI to the README. It handles the rest.</span><br>
-      <span class="prompt">$</span> <span class="cmd">git clone https://github.com/JJValentin/Leverage-Lab-Free-Skills.git</span><br>
-      <span class="prompt">$</span> <span class="cmd">cp -r skills/* ~/.claude/skills/</span><br>
-      <br>
-      <span class="output">Installed: structured-reasoning, deep-search, skill-forge</span><br>
-      <span class="output">Ready to use.</span>
-    </div>
+  <div class="scroll-hint">
+    Scroll to start
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
   </div>
 </section>
 
-<div class="divider"><hr></div>
+<div class="div-line"><hr></div>
 
-<!-- ── Skills ── -->
-<section id="skills">
-  <span class="section-label">What's inside</span>
-  <h2 class="section-title">Three skills. No filler.</h2>
-  <p class="section-subtitle">Each skill was built from real usage, not theory. They work on Claude Code, OpenClaw, Cursor, Windsurf, or anything that reads markdown.</p>
+<!-- ═══════════════════ PART 1: SKILLS ═══════════════════ -->
+<section class="chapter" id="skills">
+  <div class="chapter-num fi">Part 1</div>
+  <h2 class="chapter-title fi fi-d1">Skills <span class="highlight">(The Brains)</span></h2>
+  <p class="chapter-lead fi fi-d2">Specialized instruction sets that tell Claude how to handle a specific type of work. Install once, run the playbook forever.</p>
 
-  <div class="skills-grid">
-    <!-- Structured Reasoning -->
-    <div class="skill-card fade-in">
-      <div class="skill-card-icon green">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      </div>
+  <div class="skill-row fi fi-d2">
+    <div class="skill-card">
+      <span class="skill-tag tag-free">FREE</span>
+      <div class="skill-icon g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
       <h3>Structured Reasoning</h3>
-      <p>Forces systematic thinking on complex decisions. First principles, tradeoff analysis, assumption testing, multi-perspective validation. Not "here are some options." Real analysis.</p>
-      <span class="skill-card-tag tag-free">FREE</span>
-      <ul class="skill-features">
-        <li>Three modes: Light, Deep, Consensus</li>
-        <li>8-phase Engineering Flywheel framework</li>
-        <li>Auto-routes by decision reversibility</li>
-        <li>Optional thinker validation for Type 1 decisions</li>
-      </ul>
+      <p>Forces systematic thinking. First principles, tradeoff analysis, assumption testing. For decisions where the obvious answer might be wrong.</p>
     </div>
-
-    <!-- Deep Search -->
-    <div class="skill-card fade-in">
-      <div class="skill-card-icon blue">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </div>
+    <div class="skill-card">
+      <span class="skill-tag tag-free">FREE</span>
+      <div class="skill-icon b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
       <h3>Deep Search</h3>
-      <p>Multi-platform research across YouTube, Reddit, HackerNews, X, and SearXNG in parallel. Scored, deduplicated, cross-source linked. What are people actually saying about X?</p>
-      <span class="skill-card-tag tag-free">FREE</span>
-      <ul class="skill-features">
-        <li>5 platforms searched simultaneously</li>
-        <li>Three-axis scoring: relevance, recency, engagement</li>
-        <li>Cross-source convergence detection</li>
-        <li>Zero pip dependencies</li>
-      </ul>
+      <p>Multi-platform research across YouTube, Reddit, HackerNews, X, and search engines. In parallel. Scored, deduplicated, cross-source linked.</p>
     </div>
-
-    <!-- Skill Forge -->
-    <div class="skill-card fade-in">
-      <div class="skill-card-icon purple">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-      </div>
+    <div class="skill-card">
+      <span class="skill-tag tag-free">FREE</span>
+      <div class="skill-icon p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
       <h3>Skill Forge</h3>
-      <p>The skill that builds skills. Feed it what you want to automate. It generates a structured SKILL.md with triggers, steps, context, and constraints. Turn any repeated workflow into a reliable skill.</p>
-      <span class="skill-card-tag tag-free">FREE</span>
-      <ul class="skill-features">
-        <li>CREATE mode and OPTIMIZE mode</li>
-        <li>11 thinking lenses for deep analysis</li>
-        <li>Quality gates and trigger requirements</li>
-        <li>3-agent synthesis panel for validation</li>
-      </ul>
+      <p>The meta-skill. Feed it what you want to automate. It generates a structured SKILL.md with triggers, steps, context, and constraints.</p>
     </div>
+  </div>
 
-    <!-- Agent-Ops -->
-    <div class="skill-card fade-in">
-      <div class="skill-card-icon amber">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+  <div class="skill-row fi fi-d3">
+    <div class="skill-card wide">
+      <span class="skill-tag tag-private">PRIVATE</span>
+      <div class="skill-icon a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+      <h3>Google Workspace CLI</h3>
+      <p>92 agent skills covering Gmail, Calendar, Drive, Sheets, Docs, Chat, Tasks, Keep, Meet, Forms, Slides. Full Google ecosystem access from the terminal. I use this every single day.</p>
+    </div>
+    <div class="skill-card">
+      <span class="skill-tag tag-private">PRIVATE</span>
+      <div class="skill-icon c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+      <h3>UI/UX Pro Max</h3>
+      <p>Designs interfaces, wireframes, and user flows. Funnel pages, dashboards, component selection, responsive design. Real design principles.</p>
+    </div>
+  </div>
+
+  <div class="skill-row fi fi-d4">
+    <div class="skill-card">
+      <span class="skill-tag tag-private">PRIVATE</span>
+      <div class="skill-icon r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+      <h3>Offer Publisher</h3>
+      <p>Full offer architecture. Market research through copy primer to launch-ready assets. Not a copywriting tool. An offer design system.</p>
+    </div>
+    <div class="skill-card">
+      <span class="skill-tag tag-private">PRIVATE</span>
+      <div class="skill-icon a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <h3>Fast Launch</h3>
+      <p>Takes a validated offer and turns it into a shippable product in a weekend. Course outlines, lessons, landing pages, email sequences.</p>
+    </div>
+  </div>
+
+  <div class="callout fi">
+    <strong>How to think about skills:</strong> You don't need all of these on day one. Start with the one that matches your biggest bottleneck. Making decisions? Structured Reasoning. Research? Deep Search. Building your own? Skill Forge. Install one. Use it for a week. Add the next when it earns its spot.
+  </div>
+</section>
+
+<div class="div-line"><hr></div>
+
+<!-- ═══════════════════ PART 2: TOOLS ═══════════════════ -->
+<section class="chapter" id="tools">
+  <div class="chapter-num fi">Part 2</div>
+  <h2 class="chapter-title fi fi-d1">APIs + Tools <span class="highlight">(The Hands)</span></h2>
+  <p class="chapter-lead fi fi-d2">Skills give Claude the brain. Connected services give it hands. These let Claude actually <em>do</em> things.</p>
+
+  <div class="int-grid fi fi-d2">
+    <div class="int-card">
+      <h4>Google Workspace CLI</h4>
+      <p>The backbone. 92 agent skills, full Google ecosystem. "Triage my inbox" and Claude reads your last 10 emails, flags urgent ones, drafts replies.</p>
+    </div>
+    <div class="int-card">
+      <h4>GoHighLevel</h4>
+      <p>CRM, funnels, automations, client pipelines. Claude checks client status, triggers automations, manages campaigns without touching the dashboard.</p>
+    </div>
+    <div class="int-card">
+      <h4>Whop</h4>
+      <p>Products, memberships, payments, promo codes. Build and manage digital products with full API access. Create products, manage access, handle refunds.</p>
+    </div>
+    <div class="int-card">
+      <h4>Google Stitch</h4>
+      <p>AI-powered design. Funnel graphics, social assets, landing page visuals. Pairs with Offer Publisher and UI/UX Pro Max for a complete pipeline.</p>
+    </div>
+  </div>
+
+  <div class="callout blue fi">
+    <strong>The integration principle:</strong> Individual tools are useful. Connected tools are powerful. Offer Publisher designs the offer, Stitch creates the visuals, GHL builds the funnel, Whop handles payments. Your tools should talk to each other through Claude. That's the multiplier.
+  </div>
+</section>
+
+<div class="div-line"><hr></div>
+
+<!-- ═══════════════════ PART 3: WORKFLOW ═══════════════════ -->
+<section class="chapter" id="workflow">
+  <div class="chapter-num fi">Part 3</div>
+  <h2 class="chapter-title fi fi-d1">The Workflow <span class="highlight">(The Brain Behind the Brain)</span></h2>
+  <p class="chapter-lead fi fi-d2">This is the part most people skip. And the part that matters most.</p>
+
+  <h3 style="font-family:var(--h);font-size:1.15rem;font-weight:600;margin-bottom:20px" class="fi fi-d2">The Two Enforcement Tools</h3>
+
+  <div class="two-up fi fi-d2">
+    <div class="two-up-card">
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Superpowers
+      </h3>
+      <p>Makes Claude use your installed skills instead of ignoring them and freestyling. By default, Claude skips skills, rationalizes why it doesn't need them, and gives generic output. Superpowers makes skill invocation mandatory. It also forces brainstorming before planning. Think of it as the discipline layer.</p>
+    </div>
+    <div class="two-up-card">
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+        OpenSpec
+      </h3>
+      <p>Spec-driven workflow. Creates actual artifacts at each stage: proposal, design, task list. Not optional. They're files that get created, reviewed, then executed. You can't skip from brainstorm to build because the build step literally requires the artifacts to exist first.</p>
+    </div>
+  </div>
+
+  <p class="fi" style="font-size:.95rem;color:var(--t2);margin-bottom:40px;line-height:1.7;max-width:640px">Together they create a 4-step sequence that is hard to shortcut.</p>
+
+  <div class="seq fi">
+    <div class="seq-step">
+      <div class="seq-marker"><div class="seq-num">1</div><div class="seq-line"></div></div>
+      <div class="seq-content">
+        <h3>Brainstorming + Research</h3>
+        <p>Superpowers triggers brainstorming mode. Deep Search pulls data from multiple platforms. Structured Reasoning challenges assumptions. You explore the problem space. No commitments yet.</p>
+        <span class="seq-tool">Deep Search + Structured Reasoning</span>
       </div>
-      <h3>Agent-Ops Schema</h3>
-      <p>A custom OpenSpec schema for managing projects with AI agents. Structured workflow from idea to implementation. Proposal, specs, design, tasks. No more jumping straight to building.</p>
-      <span class="skill-card-tag tag-schema">OPENSPEC</span>
-      <ul class="skill-features">
-        <li>Proposal: what and why</li>
-        <li>Specs: GIVEN/WHEN/THEN acceptance criteria</li>
-        <li>Design: approach, tools, risks</li>
-        <li>Tasks: assignable units with verification</li>
-      </ul>
+    </div>
+    <div class="seq-step">
+      <div class="seq-marker"><div class="seq-num">2</div><div class="seq-line"></div></div>
+      <div class="seq-content">
+        <h3>Proposal</h3>
+        <p>OpenSpec creates proposal.md. What are we building, why, for whom, what does success look like. A one-page document that forces you to articulate the idea before building it. Most bad AI output traces back to a vague brief. The proposal kills vagueness.</p>
+        <span class="seq-tool">OpenSpec &rarr; proposal.md</span>
+      </div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-marker"><div class="seq-num">3</div><div class="seq-line"></div></div>
+      <div class="seq-content">
+        <h3>Planning</h3>
+        <p>OpenSpec creates design.md and tasks.md. The how and the implementation steps. This is where Structured Reasoning earns its keep. Tradeoff analysis, first principles, assumption testing on the actual design decisions.</p>
+        <span class="seq-tool">OpenSpec &rarr; design.md + tasks.md</span>
+      </div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-marker"><div class="seq-num">4</div><div class="seq-line"></div></div>
+      <div class="seq-content">
+        <h3>Implementation</h3>
+        <p>Now build. The proposal gives you clarity. The design gives you architecture. The task list gives you sequence. Every skill and tool you need was identified in step 3. Now you just run them.</p>
+        <span class="seq-tool">Execute with full context</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout amber fi">
+    <strong>Why this matters:</strong> Most people go straight from brainstorm to implementation. 3 hours later they have something that kind of works but doesn't quite fit and needs to be redone. The middle steps cost 15 minutes and a few hundred tokens. They save hours of rework and thousands of wasted tokens. Better input, better output. Every time.
+  </div>
+
+  <h3 style="font-family:var(--h);font-size:1.1rem;font-weight:600;margin:40px 0 20px" class="fi">What you need to get good at</h3>
+
+  <div class="meta-grid fi">
+    <div class="meta-card">
+      <h4>Context Management</h4>
+      <p>Claude is only as good as what it knows. The right context, not too much and not too little, is the single biggest leverage point.</p>
+    </div>
+    <div class="meta-card">
+      <h4>Prompting</h4>
+      <p>Not tricks and hacks. Real prompting: clear about what you want, giving constraints, providing examples, specifying output. Treat Claude like a brilliant new hire. Clear briefs, not mind-reading.</p>
+    </div>
+    <div class="meta-card">
+      <h4>Strategic Thinking</h4>
+      <p>The AI does the execution. You do the judgment. What to build, who it's for, what matters. This is the part that doesn't automate.</p>
     </div>
   </div>
 </section>
 
-<div class="divider"><hr></div>
+<div class="div-line"><hr></div>
 
-<!-- ── Workflow ── -->
-<section id="workflow">
-  <span class="section-label">The sequence</span>
-  <h2 class="section-title">Most people skip the middle steps.</h2>
-  <p class="section-subtitle">Brainstorm to implementation in one jump. The middle steps cost 15 minutes and save hours of rework.</p>
+<!-- ═══════════════════ PART 4: AGENTS ═══════════════════ -->
+<section class="chapter" id="agents">
+  <div class="chapter-num fi">Part 4</div>
+  <h2 class="chapter-title fi fi-d1">Agents <span class="highlight">(The Next Level)</span></h2>
+  <p class="chapter-lead fi fi-d2">Everything above is one human, one AI, one terminal. Agents are what happens when you add more AI to the system.</p>
 
-  <div class="workflow-steps fade-in">
-    <div class="workflow-step">
-      <div class="workflow-step-num">01</div>
-      <h3>Research</h3>
-      <p>Explore the problem space. Pull data from multiple platforms. Find what people actually say.</p>
-      <span class="workflow-step-tool">Deep Search</span>
+  <h3 style="font-family:var(--h);font-size:1.05rem;font-weight:600;margin-bottom:16px" class="fi fi-d2">The Landscape</h3>
+
+  <div class="agent-row fi fi-d2">
+    <div class="agent-card">
+      <h4>Manus</h4>
+      <p>Cloud-based AI agent. Browse the web, write code, manage files. Good for general automation. Limited customization.</p>
     </div>
-    <div class="workflow-step">
-      <div class="workflow-step-num">02</div>
-      <h3>Decide</h3>
-      <p>Evaluate options systematically. First principles, tradeoffs, assumption testing. Kill the obvious-but-wrong answer.</p>
-      <span class="workflow-step-tool">Structured Reasoning</span>
+    <div class="agent-card">
+      <h4>Claude's Built-in Tools</h4>
+      <p>Tool use, computer use, multi-step workflows. Solid for single-agent tasks. Growing fast.</p>
     </div>
-    <div class="workflow-step">
-      <div class="workflow-step-num">03</div>
-      <h3>Plan</h3>
-      <p>Create a proposal, specs, design, and task list. Real artifacts, not mental notes. Verifiable acceptance criteria.</p>
-      <span class="workflow-step-tool">Agent-Ops</span>
+    <div class="agent-card featured">
+      <h4>OpenClaw <span style="color:var(--green);font-size:.75rem">What I use</span></h4>
+      <p>Open-source agent framework. Multiple agents with persistent memory, specialized roles, cron jobs, and cross-agent coordination.</p>
     </div>
-    <div class="workflow-step">
-      <div class="workflow-step-num">04</div>
-      <h3>Build</h3>
-      <p>Now build. With clarity, architecture, and a task list. Every skill and tool was identified in step 3.</p>
-      <span class="workflow-step-tool">Execute</span>
+  </div>
+
+  <div class="callout fi">
+    <strong>Why I use OpenClaw:</strong> I need multiple specialized agents working together. Not one generalist. A small team that works 24/7.
+  </div>
+
+  <div class="agent-roles fi">
+    <div class="agent-role"><div class="agent-role-dot" style="background:var(--blue)"></div>Orchestrator <span>coordinates everything</span></div>
+    <div class="agent-role"><div class="agent-role-dot" style="background:var(--green)"></div>Engineer <span>builds, deploys, maintains</span></div>
+    <div class="agent-role"><div class="agent-role-dot" style="background:var(--purple)"></div>Content <span>writes in my voice</span></div>
+    <div class="agent-role"><div class="agent-role-dot" style="background:var(--amber)"></div>Strategy <span>deep analysis, quality review</span></div>
+  </div>
+
+  <h3 style="font-family:var(--h);font-size:1.05rem;font-weight:600;margin:40px 0 16px" class="fi">What a Good Agent Setup Looks Like</h3>
+
+  <div class="int-grid fi">
+    <div class="int-card">
+      <h4>Identity</h4>
+      <p>Agents know who they are, what they do, and how they communicate.</p>
     </div>
-    <div class="workflow-step">
-      <div class="workflow-step-num">05</div>
-      <h3>Capture</h3>
-      <p>Turn successful workflows into reusable skills. The process that works, packaged so AI runs it reliably every time.</p>
-      <span class="workflow-step-tool">Skill Forge</span>
+    <div class="int-card">
+      <h4>Memory</h4>
+      <p>They remember last session. Decisions persist. Context carries forward.</p>
+    </div>
+    <div class="int-card">
+      <h4>Specialization</h4>
+      <p>Each agent is good at one thing. Generalists produce generic output.</p>
+    </div>
+    <div class="int-card">
+      <h4>Coordination</h4>
+      <p>Someone decides who does what. Without orchestration, agents step on each other.</p>
     </div>
   </div>
 </section>
 
-<div class="divider"><hr></div>
+<div class="div-line"><hr></div>
 
-<!-- ── Agent-Ops ── -->
-<section id="agent-ops">
-  <span class="section-label">Project management</span>
-  <h2 class="section-title">Agent-Ops Schema</h2>
-  <p class="section-subtitle">Instead of jumping from idea to implementation, enforce a structured flow. Each step produces a real file that the next step depends on.</p>
+<!-- ═══════════════════ PART 5: BUILD YOUR OWN ═══════════════════ -->
+<section class="chapter" id="build">
+  <div class="chapter-num fi">Part 5</div>
+  <h2 class="chapter-title fi fi-d1">Build Your Own Skills</h2>
+  <p class="chapter-lead fi fi-d2">This is the most valuable section. My private skills took months to refine. But the process is learnable, and it changes how you use AI permanently.</p>
 
-  <div class="flow-diagram fade-in">
-    <div class="flow-row">
-      <div class="flow-node flow-green">
-        <div class="flow-node-box">Proposal</div>
-        <span class="flow-node-sub">why</span>
-      </div>
-      <div class="flow-arrow">&rarr;</div>
-      <div class="flow-node flow-blue">
-        <div class="flow-node-box">Specs</div>
-        <span class="flow-node-sub">what done<br>looks like</span>
-      </div>
-      <div class="flow-arrow">&rarr;</div>
-      <div class="flow-node flow-purple">
-        <div class="flow-node-box">Design</div>
-        <span class="flow-node-sub">how</span>
-      </div>
-      <div class="flow-arrow">&rarr;</div>
-      <div class="flow-node flow-amber">
-        <div class="flow-node-box">Tasks</div>
-        <span class="flow-node-sub">who does<br>what</span>
-      </div>
+  <div class="callout fi">
+    <strong>What is a skill, really?</strong> A markdown file with triggers (when should it activate?), steps (the exact sequence), context (background knowledge), constraints (what it should NOT do), and output format (what "done" looks like). That's it. A structured brief that turns a vague request into a repeatable, high-quality process.
+  </div>
+
+  <h3 style="font-family:var(--h);font-size:1.05rem;font-weight:600;margin:32px 0 16px" class="fi">The Process</h3>
+
+  <div class="build-steps fi">
+    <div class="build-step">
+      <div class="build-step-num">01</div>
+      <h4>Identify the pattern</h4>
+      <p>What task do you do repeatedly that requires the same thinking every time? If you've explained it to Claude more than twice, it's a skill candidate.</p>
+    </div>
+    <div class="build-step">
+      <div class="build-step-num">02</div>
+      <h4>Write the manual version</h4>
+      <p>Before automating, write out exactly how YOU do it. Step one, what info, what decisions, what good vs bad looks like. Hardest step. Most people can't articulate their own process.</p>
+    </div>
+    <div class="build-step">
+      <div class="build-step-num">03</div>
+      <h4>Structure it as SKILL.md</h4>
+      <p>Convert to triggers, steps, context, constraints, output. Be specific. "Write good copy" is not a step. "Write a headline that names the target audience's #1 pain point using their exact language" is.</p>
+    </div>
+    <div class="build-step">
+      <div class="build-step-num">04</div>
+      <h4>Test and iterate</h4>
+      <p>Run on a real task. First version: 60% right. The gap between what you meant and what Claude understood is where the learning happens. Three iterations gets you to 90%+.</p>
     </div>
   </div>
 
-  <div class="artifacts-grid">
-    <div class="artifact-card fade-in">
-      <h4>Proposal</h4>
-      <div class="filename">proposal.md</div>
-      <p>Establishes why. What problem it solves, why now, what changes, who owns it. One page. Forces you to articulate the idea before building it.</p>
-    </div>
-    <div class="artifact-card fade-in">
-      <h4>Specs</h4>
-      <div class="filename">specs/&lt;workstream&gt;/spec.md</div>
-      <p>Defines what done looks like. GIVEN/WHEN/THEN scenarios. Every criterion is verifiable with a clear pass/fail. No ambiguity.</p>
-    </div>
-    <div class="artifact-card fade-in">
-      <h4>Design</h4>
-      <div class="filename">design.md</div>
-      <p>Explains how. Context, goals, approach, tools, risks, coordination. Optional -- create only when complexity warrants it.</p>
-    </div>
-    <div class="artifact-card fade-in">
-      <h4>Tasks</h4>
-      <div class="filename">tasks.md</div>
-      <p>Breaks work into assignable units. Checkbox format for tracking. Each task completable in under 30 minutes. Grouped by phase with verification.</p>
-    </div>
-  </div>
-
-  <div class="code-block fade-in">
-    <span class="comment"># Tell your AI what to build. It handles the rest.</span><br>
-    <br>
-    <span class="prompt">&gt;</span> <span class="cmd">"Create a new openspec change for building a newsletter automation pipeline"</span><br>
-    <br>
-    <span class="output">Created: openspec/changes/newsletter-automation/</span><br>
-    <span class="output">&nbsp;&nbsp;proposal.md &nbsp;-- what and why</span><br>
-    <span class="output">&nbsp;&nbsp;specs/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- acceptance criteria</span><br>
-    <span class="output">&nbsp;&nbsp;design.md &nbsp;&nbsp;&nbsp;-- approach and tools</span><br>
-    <span class="output">&nbsp;&nbsp;tasks.md &nbsp;&nbsp;&nbsp;&nbsp;-- implementation steps</span><br>
-    <span class="output">Ready for implementation.</span>
+  <div class="callout fi" style="margin-top:32px">
+    <strong>The meta-skill:</strong> Building skills IS the skill. Once you can turn any repeated process into a reliable AI workflow, you're not dependent on anyone else's toolkit. You build exactly what you need when you need it. The three free skills are useful. The ability to build your own is worth 10x more.
   </div>
 </section>
 
-<div class="divider"><hr></div>
+<div class="div-line"><hr></div>
 
-<!-- ── Getting Started ── -->
-<section id="start">
-  <span class="section-label">Where to start</span>
-  <h2 class="section-title">Don't replicate overnight.</h2>
-  <p class="section-subtitle">Start with one skill. Add the next when it earns its spot.</p>
+<!-- ═══════════════════ WHERE TO START ═══════════════════ -->
+<section class="chapter" id="start">
+  <div class="chapter-num fi">Where to start</div>
+  <h2 class="chapter-title fi fi-d1">Don't try to replicate overnight.</h2>
+  <p class="chapter-lead fi fi-d2">Here's the progression.</p>
 
-  <div class="getting-started-grid">
-    <div class="gs-card fade-in">
-      <div class="gs-card-week">Day 1</div>
-      <h3>Structured Reasoning</h3>
-      <p>Install it. Use it on a real decision you're facing today. Notice the difference between skilled and unskilled output.</p>
+  <div class="timeline fi">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-when">Day 1</div>
+        <h4>Install Structured Reasoning</h4>
+        <p>Use it on a real decision you're facing today. Notice the difference between skilled and unskilled output.</p>
+      </div>
     </div>
-    <div class="gs-card fade-in">
-      <div class="gs-card-week">Week 1</div>
-      <h3>Deep Search</h3>
-      <p>Run it on a topic you're researching. See what multi-platform parallel research looks like vs manual web searches.</p>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-when">Week 1</div>
+        <h4>Install Deep Search</h4>
+        <p>Run it on a topic you're researching for your business. See what multi-platform parallel research actually looks like.</p>
+      </div>
     </div>
-    <div class="gs-card fade-in">
-      <div class="gs-card-week">Week 2</div>
-      <h3>The 4-step workflow</h3>
-      <p>Use Agent-Ops on your next project. Brainstorm, propose, plan, build. Time the difference versus jumping straight to code.</p>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-when">Week 2</div>
+        <h4>Connect one tool</h4>
+        <p>Google Workspace CLI is the highest-ROI starting point. Let Claude manage your inbox or calendar for a week.</p>
+      </div>
     </div>
-    <div class="gs-card fade-in">
-      <div class="gs-card-week">Week 3</div>
-      <h3>Build your own skill</h3>
-      <p>Pick your most repeated task. Use Skill Forge to turn it into a skill. Iterate until it's reliable. Now you're building infrastructure.</p>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-when">Week 3</div>
+        <h4>Use the 4-step workflow</h4>
+        <p>On your next project. Brainstorm, propose, plan, build. Time the difference.</p>
+      </div>
     </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-when">Week 4</div>
+        <h4>Build your first skill</h4>
+        <p>Pick your most repeated task. Use Skill Forge. Iterate until it's reliable.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-when">Beyond</div>
+        <h4>Explore agents</h4>
+        <p>Start with a single agent setup. Add specialization as you outgrow it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout fi" style="margin-top:40px">
+    <strong>The goal</strong> is not to use all the tools. It's to build a setup that matches how you actually work, and then let AI handle the parts you shouldn't be doing manually.
   </div>
 </section>
 
-<!-- ── CTA ── -->
-<section class="cta-section">
-  <span class="section-label">Ready?</span>
-  <h2 class="section-title">Better input, better output.<br>Every time.</h2>
-  <p class="section-subtitle">Point your AI assistant to the README. It contains everything needed to install automatically. Or clone it yourself.</p>
-  <div class="hero-cta-group">
-    <a href="https://github.com/JJValentin/Leverage-Lab-Free-Skills" class="btn btn-primary" target="_blank" rel="noopener">
+<div class="div-line"><hr></div>
+
+<!-- ═══════════════════ DOWNLOADS ═══════════════════ -->
+<section class="dl-section" id="downloads">
+  <div class="chapter-num fi" style="justify-content:center">Downloads</div>
+  <h2 class="chapter-title fi fi-d1" style="text-align:center;margin:0 auto 8px">Get the free skills.</h2>
+  <p style="font-size:1rem;color:var(--t2);text-align:center;max-width:480px;margin:0 auto" class="fi fi-d2">Three production-tested skills plus the Agent-Ops project management schema. MIT license. Use however you want.</p>
+
+  <div class="dl-box fi fi-d2">
+    <div class="dl-items">
+      <div class="dl-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Structured Reasoning
+      </div>
+      <div class="dl-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Deep Search (5-platform parallel research)
+      </div>
+      <div class="dl-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Skill Forge (build your own skills)
+      </div>
+      <div class="dl-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Agent-Ops Schema (OpenSpec project management)
+      </div>
+    </div>
+    <p style="font-size:.82rem;color:var(--t4);margin-bottom:20px">README includes AI-friendly install instructions. Point your AI to the repo and it sets itself up.</p>
+    <a href="https://github.com/JJValentin/Leverage-Lab-Free-Skills" class="btn btn-g" target="_blank" rel="noopener">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
       Get the repo
     </a>
-    <a href="https://leveragelab.co" class="btn btn-secondary" target="_blank" rel="noopener">Learn more</a>
   </div>
 </section>
 
 <footer>
-  <p>MIT License. Use however you want.</p>
-  <p style="margin-top: 8px;">From the <a href="https://leveragelab.co" target="_blank" rel="noopener">Leverage Lab</a> -- building with AI, not just talking about it.</p>
+  <p>Built with the setup described above. Obviously.</p>
+  <p style="margin-top:8px">From the <a href="https://leveragelab.co" target="_blank" rel="noopener">Leverage Lab</a> -- building with AI, not just talking about it.</p>
 </footer>
 
-<!-- ── Scroll animations ── -->
 <script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  // Progress bar
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / h * 100) + '%';
+  });
+
+  // Scroll animations
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.fi,.fi-l,.fi-r,.fi-scale').forEach(el => obs.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('.chapter, .dl-section');
+  const navLinks = document.querySelectorAll('.nav-chapters a');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const id = e.target.id;
+        const link = document.querySelector(`.nav-chapters a[data-section="${id}"]`);
+        if (link) link.classList.add('active');
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  }, { threshold: 0.2, rootMargin: '-80px 0px -50% 0px' });
+  sections.forEach(s => navObs.observe(s));
 </script>
 
 </body>
