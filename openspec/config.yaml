@@ -1,0 +1,41 @@
+schema: agent-ops
+
+context: |
+  This is an AI agent operations workspace, not a traditional codebase.
+  Work types: content creation, research, outreach, newsletter ops, offer building,
+  automation, client delivery, system administration, SEO, analytics.
+  
+  Agent team:
+  - Z: orchestrator, strategist, client-facing synthesis
+  - Rex: engineering, infrastructure, API integrations, code
+  - Echo: content creation, copywriting, social media, newsletters
+  - Scout: research, competitive analysis, data gathering
+  - Joshua: human owner, final approver for external-facing work
+  
+  Tools: OpenClaw (agent platform), beehiiv (newsletter), Notion (knowledge base),
+  Discord/Mattermost (comms), Google Workspace (docs/sheets/calendar),
+  Mission Control (task board), Obsidian (vault), Whop (products).
+  
+  Key rules:
+  - Never deploy to client accounts without Joshua's explicit approval
+  - Investigations are read-only unless explicitly approved to fix
+  - All external-facing content requires Joshua review before publish
+
+rules:
+  proposal:
+    - Include which agent(s) own execution
+    - If external-facing (client, public), flag approval gates
+    - Estimate time to complete (hours, not story points)
+  specs:
+    - Every criterion must have a verifiable scenario
+    - Use GIVEN/WHEN/THEN for scenarios, not code test syntax
+    - Include edge cases (what happens when things go wrong?)
+  design:
+    - Name specific tools and skills (not generic "use an API")
+    - Include credential status for any API integrations
+    - Flag any operations that need Joshua approval
+  tasks:
+    - Tag every task with @agent or @joshua
+    - Tasks must be completable in a single agent session (< 30 min)
+    - Include explicit verification steps per phase
+    - Include approval gates where external output needs Joshua sign-off

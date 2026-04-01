@@ -1,0 +1,152 @@
+name: agent-ops
+version: 1
+description: Agent operations workflow - proposal → specs → approach → tasks. Designed for non-code work (content, research, outreach, automation, newsletter ops, offer building, client work).
+artifacts:
+  - id: proposal
+    generates: proposal.md
+    description: Change proposal outlining what and why
+    template: proposal.md
+    instruction: |
+      Create the proposal document that establishes WHY this work is needed.
+
+      Sections:
+      - **Why**: 1-2 sentences on the problem or opportunity. What problem does this solve? Why now?
+      - **What Changes**: Bullet list of what will be created, modified, or removed. Be specific about deliverables, workflows, or systems affected.
+      - **Workstreams**: Identify distinct workstreams this creates:
+        - **New Workstreams**: Work being introduced. Each becomes a spec file at `specs/<name>/spec.md`. Use kebab-case names (e.g., `newsletter-launch`, `lead-research`, `offer-copy`).
+        - **Modified Workstreams**: Existing workflows or systems whose requirements are changing. Only include if the acceptance criteria change (not just execution details). Check `openspec/specs/` for existing names.
+      - **Impact**: Affected systems, tools, schedules, dependencies, or people.
+      - **Owner**: Which agent(s) or person owns execution. Use agent names: Z, Rex, Echo, Scout.
+
+      Keep it concise (1 page max). Focus on the "why" and "what", not the "how" --
+      approach and tooling belong in the design document.
+
+      This is the foundation -- specs, approach, and tasks all build on this.
+    requires: []
+
+  - id: specs
+    generates: "specs/**/*.md"
+    description: Acceptance criteria defining what done looks like
+    template: spec.md
+    instruction: |
+      Create specification files that define WHAT success looks like.
+
+      Create one spec file per workstream listed in the proposal's Workstreams section.
+      - New workstreams: use the exact kebab-case name from the proposal (specs/<name>/spec.md).
+      - Modified workstreams: use the existing spec folder name when creating the delta spec.
+
+      Delta operations (use ## headers):
+      - **ADDED Criteria**: New acceptance criteria
+      - **MODIFIED Criteria**: Changed requirements -- MUST include full updated content
+      - **REMOVED Criteria**: Deprecated requirements -- MUST include **Reason** and **Migration**
+
+      Format:
+      - Each criterion: `### Criterion: <name>` followed by description
+      - Use MUST/SHALL for hard requirements, SHOULD for soft preferences
+      - Each scenario: `#### Scenario: <name>` with GIVEN/WHEN/THEN or INPUT/OUTPUT format
+      - Every criterion MUST have at least one scenario
+
+      Example for non-code work:
+      ```
+      ## ADDED Criteria
+
+      ### Criterion: Newsletter publishes weekly
+      The newsletter MUST publish every Tuesday by 10am EST.
+
+      #### Scenario: Normal week
+      - **GIVEN** content is approved by Monday 5pm
+      - **WHEN** Tuesday 10am arrives
+      - **THEN** newsletter is live on beehiiv and confirmation posted in War Room
+
+      #### Scenario: Content not approved
+      - **GIVEN** content is NOT approved by Monday 5pm
+      - **WHEN** Monday 5pm passes
+      - **THEN** escalate to Joshua via DM with options: delay, substitute content, or skip
+      ```
+
+      Specs should be verifiable -- each scenario has a clear pass/fail condition.
+      Think "how would someone confirm this is done?" not "how would a test suite check this?"
+    requires:
+      - proposal
+
+  - id: design
+    generates: design.md
+    description: Approach document with tools, agents, and workflow decisions
+    template: design.md
+    instruction: |
+      Create the approach document that explains HOW the work will be executed.
+
+      When to include (create only if any apply):
+      - Multiple agents or tools involved
+      - New tool/integration/API being used
+      - Coordination required across systems (beehiiv + Notion + Discord, etc.)
+      - Workflow has timing dependencies or approval gates
+      - Ambiguity that benefits from decisions before execution
+
+      Sections:
+      - **Context**: Background, current state, what exists today
+      - **Goals / Non-Goals**: What this approach achieves and explicitly excludes
+      - **Approach**: Key decisions about how work gets done. Which agents handle what? Which tools? What order? Include alternatives considered and why this approach was chosen.
+      - **Tools & Systems**: Specific tools, APIs, skills, or integrations needed. Include credentials status (available/needed).
+      - **Risks / Tradeoffs**: What could go wrong? Format: [Risk] → Mitigation
+      - **Coordination**: Who needs to approve what? What are the handoff points? Timing dependencies?
+      - **Open Questions**: Unresolved decisions or unknowns
+
+      Focus on workflow and decisions, not step-by-step execution.
+      Reference the proposal for motivation and specs for acceptance criteria.
+    requires:
+      - proposal
+
+  - id: tasks
+    generates: tasks.md
+    description: Execution checklist with agent-assignable work units
+    template: tasks.md
+    instruction: |
+      Create the task list that breaks work into agent-assignable units.
+
+      **IMPORTANT: Follow checkbox format exactly.** The apply phase parses
+      checkboxes to track progress. Tasks not using `- [ ]` won't be tracked.
+
+      Guidelines:
+      - Group related tasks under ## numbered headings
+      - Each task MUST be a checkbox: `- [ ] X.Y Task description`
+      - Tag each task with the responsible agent: `@rex`, `@echo`, `@scout`, `@z`, or `@joshua`
+      - Tasks should be completable in a single agent session (< 30 min)
+      - Order by dependency (what must happen first?)
+      - Include verification step for each group: "Confirm [deliverable] meets [criterion from spec]"
+
+      Example:
+      ```
+      ## 1. Research & Gather
+
+      - [ ] 1.1 @scout Pull competitor newsletter examples (5 minimum)
+      - [ ] 1.2 @scout Research subject line patterns for 40%+ open rates
+      - [ ] 1.3 Verify: research doc covers all criteria from specs
+
+      ## 2. Content Creation
+
+      - [ ] 2.1 @echo Draft newsletter body from research findings
+      - [ ] 2.2 @echo Write 5 subject line variants
+      - [ ] 2.3 @joshua Review and approve final draft
+
+      ## 3. Publish & Distribute
+
+      - [ ] 3.1 @rex Push approved content to beehiiv via API
+      - [ ] 3.2 @echo Cross-post summary to Discord
+      - [ ] 3.3 Verify: newsletter live and confirmation posted
+      ```
+
+      Reference specs for acceptance criteria, approach for tool/agent assignments.
+      Each task should be verifiable -- you know when it's done.
+      Include explicit approval gates where Joshua's sign-off is needed.
+    requires:
+      - specs
+      - design
+
+apply:
+  requires: [tasks]
+  tracks: tasks.md
+  instruction: |
+    Read the proposal, specs, and approach for context. Work through pending tasks in order.
+    Mark each task complete as you finish it. Pause and escalate if you hit blockers,
+    need approval, or encounter something outside the spec.
