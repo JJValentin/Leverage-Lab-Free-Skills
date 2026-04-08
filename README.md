@@ -378,4 +378,4 @@ DM me on social. I read all of them.
 
 ---
 
-*From the [Leverage Lab](https://leveragelab.co) — building with AI, not just talking about it.*
+*From the [Leverage Lab](https://whop.com/leverage-lab-hq) — building with AI, not just talking about it.*
