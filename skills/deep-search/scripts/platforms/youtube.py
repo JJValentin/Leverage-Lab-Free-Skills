@@ -103,6 +103,7 @@ def fetch_transcript(video_id: str, temp_dir: str) -> Optional[str]:
     """Fetch auto-generated transcript for a video."""
     cmd = [
         "yt-dlp", "--ignore-config", "--no-cookies-from-browser",
+        "--js-runtimes", "node",
         "--write-auto-subs", "--sub-lang", "en", "--sub-format", "vtt",
         "--skip-download", "--no-warnings",
         "-o", f"{temp_dir}/%(id)s",
@@ -184,6 +185,7 @@ def search(topic: str, from_date: str, to_date: str, depth: str = "default", tra
 
     cmd = [
         "yt-dlp", "--ignore-config", "--no-cookies-from-browser",
+        "--js-runtimes", "node",
         f"ytsearch{count}:{core_topic}",
         "--dump-json", "--no-warnings", "--no-download",
     ]
