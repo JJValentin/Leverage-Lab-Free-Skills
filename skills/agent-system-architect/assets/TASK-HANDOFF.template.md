@@ -17,3 +17,10 @@ On resumption, re-read canonical task/approval state before proceeding.
 
 Optional model observation: <contract/model versions, receipt ref, input source revisions, expiry>.
 This is a prediction, not an approval or current task fact. Revalidate or discard after source changes.
+
+Human interaction checkpoint: <last user-visible state and its verified time>.
+Pending human decision: <exact question, recipient, action/version binding and authoritative approval reference>.
+Latest user correction/interruption: <scope and dependent actions to revalidate>.
+Notification already delivered: <channel and state-change ID, to avoid duplicates>.
+Actual stop/resume capability: <mechanism and last confirmed status, or unsupported>.
+These are optional fields in the existing handoff, not a separate notification or approval database.

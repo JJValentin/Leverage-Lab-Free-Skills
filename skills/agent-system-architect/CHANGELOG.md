@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — September 19, 2026
+
+Adds a human-agent collaboration specification with 14 traceable rules, adaptable response patterns, a compact instruction-policy template, an experience contract, a run-record template and 40 balanced behavioral scenarios. The setup procedure now explicitly installs approved interaction rules into the effective harness scope and checks actual loading.
+
+Covers proportional planning, direct execution, material clarification, reviewable approvals, progress without noise, human review capacity, visible specialist collaboration, interruption/correction, cancellation truthfulness, partial results, recovery, accessibility and agency-preserving motivation. Research distinguishes book summaries, established guidance, study abstracts and newer engineering evidence.
+
+Adds repository-local package/fixture checks and helper smoke tests. These do not prove model behavior or user experience. Existing Jev decision helper, contract semantics and Project Hub runtime remain unchanged; no provider, scheduler, permission, memory or live-harness change is activated.
+
+Migration: compare the installed skill, preserve local customizations, stage this version, and merge only the relevant collaboration policy into the approved instruction location. Do not replace native databases, duplicate task stores or import every reference into startup context. The system-spec template is now 0.4 and adds experience pointers; it is not native configuration.
+
 ## 0.3.0 — September 19, 2026
 
 Added an optional bounded decision function to the operating model, without changing its human-governed authority or native task/memory ownership. Decisions are alternatives within a workflow, not a mandatory serial model cascade.

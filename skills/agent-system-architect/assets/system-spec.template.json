@@ -1,18 +1,65 @@
 {
   "template_only": true,
-  "schema_version": "0.3",
+  "schema_version": "0.4",
   "owner": "REQUIRED: accountable human",
   "outcome": "REQUIRED: useful result and acceptance evidence",
   "non_goals": [],
-  "harness": {"name":"","installed_version":"","active_scope":"","verification":"unknown"},
-  "sources_of_truth": {"project":"","tasks":"","memory":"","artifacts":"","approvals":""},
+  "harness": {
+    "name": "",
+    "installed_version": "",
+    "active_scope": "",
+    "verification": "unknown"
+  },
+  "sources_of_truth": {
+    "project": "",
+    "tasks": "",
+    "memory": "",
+    "artifacts": "",
+    "approvals": ""
+  },
   "roles": [],
-  "permissions": {"allowed":[],"needs_approval":[],"forbidden":[],"runtime_enforcement":"unknown"},
-  "context": {"startup":[],"retrieve_on_demand":[],"never_load_here":[],"correction_owner":""},
-  "work": {"claim_mechanism":"","checkpoint":"","uncertain_action_reconciliation":"","cancellation":""},
-  "experience": {"front_door":"","next_action_view":"","decision_channel":"","notification_policy":"","correction_route":""},
-  "project_hub": {"enabled":false,"project_directory":"","task_source":"","single_host_writes_verified":false},
-  "rollout": {"staging":"","backup":"","tests_run":[],"tests_not_run":[],"rollback":""},
+  "permissions": {
+    "allowed": [],
+    "needs_approval": [],
+    "forbidden": [],
+    "runtime_enforcement": "unknown"
+  },
+  "context": {
+    "startup": [],
+    "retrieve_on_demand": [],
+    "never_load_here": [],
+    "correction_owner": ""
+  },
+  "work": {
+    "claim_mechanism": "",
+    "checkpoint": "",
+    "uncertain_action_reconciliation": "",
+    "cancellation": ""
+  },
+  "experience": {
+    "front_door": "",
+    "next_action_view": "",
+    "decision_channel": "",
+    "notification_policy": "",
+    "correction_route": "",
+    "contract_ref": "assets/experience-contract.template.json",
+    "instruction_policy_ref": "assets/COLLABORATION.template.md",
+    "effective_load_verified": false,
+    "evaluation_ref": null
+  },
+  "project_hub": {
+    "enabled": false,
+    "project_directory": "",
+    "task_source": "",
+    "single_host_writes_verified": false
+  },
+  "rollout": {
+    "staging": "",
+    "backup": "",
+    "tests_run": [],
+    "tests_not_run": [],
+    "rollback": ""
+  },
   "decisions": {
     "enabled": false,
     "default_mode": "off",
