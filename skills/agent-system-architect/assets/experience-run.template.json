@@ -1,0 +1,29 @@
+{
+  "schema_version": "architect-experience-run-1",
+  "status": "not_run",
+  "harness": null,
+  "model": null,
+  "skill_version": "0.4.0",
+  "effective_instruction_ref": null,
+  "baseline_ref": null,
+  "dataset_ref": null,
+  "started_at": null,
+  "completed_at": null,
+  "cases": [],
+  "critical_failures": null,
+  "measurements": {
+    "accepted_outcomes": null,
+    "human_active_time": null,
+    "elapsed_time": null,
+    "review_effort": null,
+    "unnecessary_interruptions": null,
+    "repeated_explanation": null,
+    "rework": null,
+    "operating_cost": null,
+    "perceived_control": null
+  },
+  "limitations": [
+    "Template only; populate from actual observations."
+  ],
+  "release_decision": "not_evaluated"
+}

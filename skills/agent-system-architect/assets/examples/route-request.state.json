@@ -1,0 +1,13 @@
+{
+  "scope_id": "example:project",
+  "observed_at": "2026-09-19T11:59:30Z",
+  "sources": [
+    {"id":"fixture:request","revision":"1"},
+    {"id":"fixture:project","revision":"3"}
+  ],
+  "fields": {
+    "user_request": "Continue the welcome-guide task for the onboarding project.",
+    "project_brief": "An existing onboarding project has a welcome-guide task with a saved draft.",
+    "unrelated_notes": "Fictional field intentionally excluded from the request."
+  }
+}
