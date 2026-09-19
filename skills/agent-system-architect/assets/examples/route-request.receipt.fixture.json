@@ -1,0 +1,24 @@
+{
+  "provider": "typesafe-jev",
+  "request_fingerprint": "39b76d0652e177f611ca809a170a5553a751ef3604b6d081a58f66c35554abea",
+  "received_at": "2026-09-19T11:59:31Z",
+  "response": {
+    "model": "jev-1.13.0",
+    "answers": {
+      "work_type": {
+        "type": "choice",
+        "choice": "existing_task",
+        "probabilities": {
+          "direct_answer": 0.02,
+          "existing_task": 0.88,
+          "project_work": 0.08,
+          "recurring_process": 0.01,
+          "unknown": 0.01
+        },
+        "confidence": 0.64
+      }
+    },
+    "usage": {"input_tokens":100,"output_tokens":10}
+  },
+  "fixture_notice": "Synthetic values, not an API result. Usage is fictional."
+}
